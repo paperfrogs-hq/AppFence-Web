@@ -11,7 +11,7 @@
 
 ---
 
-**Product of [Paperfrogs/Open](https://github.com/paperfrogs-hq)**
+**Product of [Paperfrogs/Open](https://open.paperfrogs.dev)**
 
 ## Security Notice
 
