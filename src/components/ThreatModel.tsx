@@ -1,46 +1,89 @@
-const risks = [
-  { category: "Memory safety", level: "Very Low", strategy: "Rust for all security-critical code" },
-  { category: "Privilege escalation", level: "Low", strategy: "Minimal daemon, strict DBus, separated processes" },
-  { category: "Prompt abuse", level: "Low–Med", strategy: "Secure prompt model, rate limiting, expiring decisions" },
-  { category: "Enforcement gaps", level: "Medium", strategy: "Transparent strength disclosure, no false claims" },
-  { category: "Legal exposure", level: "Low", strategy: "OS-supported APIs only, no binary modification" },
-  { category: "Privacy violations", level: "Low", strategy: "Local-only data, no telemetry, redacted logs" },
+const boundaries = [
+  "Not a malware sandbox or mandatory access control replacement.",
+  "Not a claim that every Linux capability can be strongly enforced.",
+  "Not a cloud-managed security product collecting machine activity.",
 ];
 
-const levelColor = (level: string) => {
-  if (level.includes("Very Low")) return "text-primary";
-  if (level.includes("Low")) return "text-primary/80";
-  return "text-yellow-400";
+const risks = [
+  { category: "Memory safety", level: "Very Low", strategy: "Rust for the security-critical path." },
+  {
+    category: "Privilege escalation",
+    level: "Low",
+    strategy: "Minimal daemon surface, separated processes, strict coordination.",
+  },
+  {
+    category: "Prompt abuse",
+    level: "Low-Med",
+    strategy: "Scoped requests, expiring decisions, and rate limiting.",
+  },
+  {
+    category: "Enforcement gaps",
+    level: "Medium",
+    strategy: "Tiered guarantees with no hidden claims about platform limits.",
+  },
+  {
+    category: "Legal exposure",
+    level: "Low",
+    strategy: "Documented OS APIs only, no binary patching or invasive instrumentation.",
+  },
+  {
+    category: "Privacy violations",
+    level: "Low",
+    strategy: "Local-only policy and audit storage with no telemetry channel.",
+  },
+];
+
+const levelClasses = (level: string) => {
+  if (level === "Very Low") return "border-primary/20 bg-primary/10 text-primary";
+  if (level === "Medium") return "border-accent/25 bg-accent/10 text-[#b55b1f]";
+  return "border-border bg-secondary text-muted-foreground";
 };
 
 const ThreatModel = () => (
-  <section className="px-6 py-24 max-w-2xl mx-auto">
-    <h2 className="text-2xl font-semibold text-foreground mb-4 tracking-tight">Threat model</h2>
-    <p className="text-sm text-muted-foreground mb-8 leading-relaxed text-pretty">
-      AppFence is not a malware sandbox or MAC replacement. It orchestrates policy
-      using documented OS primitives and is transparent about enforcement limits.
-    </p>
+  <section id="threat-model" className="site-section">
+    <div className="section-frame">
+      <span className="section-kicker">Threat Model</span>
+      <h2 className="section-title max-w-3xl">
+        The security story is only useful if the boundaries are visible.
+      </h2>
+      <p className="section-copy">
+        AppFence is opinionated about user control, but it is equally opinionated about saying
+        where that control ends.
+      </p>
 
-    <div className="border border-border rounded-md overflow-hidden">
-      <div className="grid grid-cols-[1fr_auto_1fr] gap-0 text-sm">
-        {/* Header */}
-        <div className="px-5 py-3 border-b border-border font-medium text-muted-foreground">Risk</div>
-        <div className="px-5 py-3 border-b border-border font-medium text-muted-foreground text-center">Level</div>
-        <div className="px-5 py-3 border-b border-border font-medium text-muted-foreground">Mitigation</div>
+      <div className="mt-12 grid gap-6 xl:grid-cols-[0.78fr_1.22fr]">
+        <aside className="panel p-6 sm:p-8">
+          <p className="mono-pill border-primary/20 bg-primary/10 text-primary">Boundaries</p>
+          <h3 className="mt-6 text-2xl font-semibold tracking-[-0.04em] text-foreground">
+            Honest scope beats overstated guarantees.
+          </h3>
 
-        {risks.map((r, i) => (
-          <div key={r.category} className="contents">
-            <div className={`px-5 py-3.5 text-foreground ${i !== risks.length - 1 ? "border-b border-border" : ""}`}>
-              {r.category}
-            </div>
-            <div className={`px-5 py-3.5 text-center font-mono text-xs ${levelColor(r.level)} ${i !== risks.length - 1 ? "border-b border-border" : ""}`}>
-              {r.level}
-            </div>
-            <div className={`px-5 py-3.5 text-muted-foreground ${i !== risks.length - 1 ? "border-b border-border" : ""}`}>
-              {r.strategy}
-            </div>
+          <div className="mt-8 space-y-3">
+            {boundaries.map((boundary) => (
+              <div key={boundary} className="panel-muted rounded-[1.5rem] p-4">
+                <p className="text-sm leading-7 text-muted-foreground">{boundary}</p>
+              </div>
+            ))}
           </div>
-        ))}
+        </aside>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          {risks.map((risk) => (
+            <article key={risk.category} className="panel h-full p-6">
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="text-lg font-semibold tracking-[-0.03em] text-foreground">
+                  {risk.category}
+                </h3>
+                <span
+                  className={`rounded-full border px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.16em] ${levelClasses(risk.level)}`}
+                >
+                  {risk.level}
+                </span>
+              </div>
+              <p className="mt-4 text-sm leading-7 text-muted-foreground">{risk.strategy}</p>
+            </article>
+          ))}
+        </div>
       </div>
     </div>
   </section>

@@ -1,28 +1,55 @@
-const Philosophy = () => {
-  const principles = [
-    { title: "User agency first", desc: "Explicit prompts and clear defaults — never silent decisions." },
-    { title: "Transparent limits", desc: "State what can and cannot be enforced. No false promises." },
-    { title: "Privacy by default", desc: "No telemetry, no cloud sync. Policy storage is local-only." },
-    { title: "OS-native", desc: "Rely on documented Linux primitives. No kernel hacks." },
-    { title: "Memory safety", desc: "Rust for all security-critical components." },
-  ];
+const principles = [
+  {
+    title: "User agency first",
+    desc: "The product should ask before it assumes and explain before it denies.",
+  },
+  {
+    title: "Transparent limits",
+    desc: "When Linux cannot enforce a capability strongly, the interface says so directly.",
+  },
+  {
+    title: "Privacy by default",
+    desc: "There is no telemetry pipeline, cloud sync, or hidden analytics layer behind policy data.",
+  },
+  {
+    title: "OS-native implementation",
+    desc: "The system leans on documented desktop and Linux primitives instead of brittle hacks.",
+  },
+  {
+    title: "Memory-safe core",
+    desc: "Security-critical parts are written in Rust to reduce entire classes of implementation bugs.",
+  },
+];
 
-  return (
-    <section className="px-6 py-24 max-w-2xl mx-auto">
-      <h2 className="text-2xl font-semibold text-foreground mb-8 tracking-tight">Philosophy</h2>
-      <ul className="space-y-5">
-        {principles.map((p) => (
-          <li key={p.title} className="flex gap-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2.5 shrink-0" />
-            <div>
-              <span className="text-sm font-medium text-foreground">{p.title}</span>
-              <span className="text-sm text-muted-foreground ml-1.5">— {p.desc}</span>
-            </div>
-          </li>
+const Philosophy = () => (
+  <section className="site-section">
+    <div className="section-frame">
+      <span className="section-kicker">Philosophy</span>
+      <h2 className="section-title max-w-3xl">
+        The visual design is softer than a typical security product, but the operating principles
+        stay strict.
+      </h2>
+      <p className="section-copy">
+        AppFence is built around clear consent, honest guarantees, and low-trust defaults without
+        turning the interface into a wall of warnings.
+      </p>
+
+      <div className="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {principles.map((principle, index) => (
+          <article
+            key={principle.title}
+            className={`panel h-full p-6 sm:p-7 ${index === 0 ? "xl:col-span-2" : ""}`}
+          >
+            <p className="text-sm font-semibold tracking-[0.2em] text-primary">0{index + 1}</p>
+            <h3 className="mt-6 text-xl font-semibold tracking-[-0.03em] text-foreground">
+              {principle.title}
+            </h3>
+            <p className="mt-4 text-sm leading-7 text-muted-foreground">{principle.desc}</p>
+          </article>
         ))}
-      </ul>
-    </section>
-  );
-};
+      </div>
+    </div>
+  </section>
+);
 
 export default Philosophy;
